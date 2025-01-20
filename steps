@@ -77,7 +77,7 @@ E. folder structure
 
 F. Commit lint (used for validation for commit msg)
         1. npm i @commitlint/cli @commitlint/config-conventional -D
-        
+
         2. create commit-msg file of shell scripting in .husky/commit-msg and add following rule init
                 ```#!/user/bin/env sh
                 . "$(dirname -- "$0")/_/husky.sh"
@@ -92,3 +92,56 @@ F. Commit lint (used for validation for commit msg)
                                                 },
                                     };```
 
+G. eslint setup
+        1.npm install --save-dev eslint @eslint/js typescript typescript-eslint
+        2. create in root eslint.config.js (create eslint.config.mjs to use commonjs modules)
+        3. put the following in the eslint.config.js
+                ```// @ts-check
+
+                        import eslint from '@eslint/js';
+                        import tseslint from 'typescript-eslint';
+
+                        export default tseslint.config(
+                        eslint.configs.recommended,
+                        tseslint.configs.recommended,
+                        );```
+        4. to make eslint work in commonjs module we have to enter following
+                ```// @ts-check
+
+                        import eslint from '@eslint/js';
+                        import tseslint from 'typescript-eslint';
+
+                        export default tseslint.config({
+                                languageOptions:{
+                                        parserOptions:{
+                                                project:true,
+                                                tsconfigRootDir:import.meta.dirname
+                                        }
+                                },
+                                files:["**/*.ts"],
+                                extends:[
+                                        eslint.configs.recommended,
+                                        ...tseslint.configs.recommendedTypeChecked,
+                                        ],
+                                rules:{
+                                        "no-console":"error", // to show error if there are any console.logs in the code
+                                        quotes:["error","single",{allowTemplateLiterals:true}]
+                                }
+                                })```
+        5. now run npx eslint . you will see the eslint error in the terminal
+        6. add the following scripts in the package.json
+                "lint": "eslint .", (for linting)
+                "lint:fix":"eslint . --fix", (for possible fixes for lint errors)
+
+H. setting up lint-staged
+        1. after liscence add following in the package.json
+                "lint-staged":{
+                                "*.ts":[
+                                        "npm run lint:fix"
+                                        ]
+                                },
+        2. add following into .husky/pre-commit
+                ```#!/usr/bin/env sh
+                . "${dirname -- "$0"}/_/husky.sh"
+
+                npx lint-staged```
