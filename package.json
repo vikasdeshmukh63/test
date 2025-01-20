@@ -1,0 +1,11 @@
+{
+  "name": "ts-backend-prod-temp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "vikas deshmukh",
+  "license": "ISC",
+  "description": ""
+}
