@@ -1,0 +1,33 @@
+A. install husky iwth lint-staged
+        1. npm i husky lint-staged -D
+        2. npx husky init
+        3. we will get pre-commit file where we will write what we need to do precommit it has a text npm test
+        4. now if we will commit anything on git then first the npm test will run
+
+B. Setup Typescript
+        1. npm i typescript -D
+        2. we have to add typescript config with npx tsc --init
+        3. make following setup in tsconfig.json
+                target:es2016
+                module:commonjs
+                rootDir:"./src",
+                outDir:"./dist" or "./build"
+                removeComments:true
+                esModuleInterop:true
+                forConsistantcasingiffileNames:true
+                strict:true
+                noImplicitAny:true
+                stictFunctionTypes:true
+                strictPropertyInitialization:true
+                alwaysStrict:true
+                noUnusedLocals:true
+                noUnusedParameters:true
+                noImplecitReturns:true
+        4. npm i -D @types/node
+        5. npm i ts-node -D (ts-node is a TypeScript execution engine for Node.js. It allows you to run TypeScript code directly without having to compile it to JavaScript first.)
+
+C. setup nodemon and change scripts
+        npm i nodemon -D
+
+D. setup build script
+        dist":"npx tsc" (it will compile ts and create a js files)

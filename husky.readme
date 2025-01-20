@@ -1,0 +1,52 @@
+Husky is a Git hook management tool that helps enforce pre-commit or pre-push workflows in your project. It allows you to run scripts automatically at various stages of the Git lifecycle, such as before commits, merges, or pushes. 
+
+### Common Use Cases
+- **Linting and formatting**: Automatically run tools like ESLint or Prettier to maintain code quality.
+- **Tests**: Ensure all tests pass before committing or pushing changes.
+- **Code checks**: Prevent committing broken or unverified code.
+
+### Example Setup
+1. Install Husky:
+   ```bash
+   npm install husky --save-dev
+   ```
+
+2. Enable Git hooks:
+   ```bash
+   npx husky install
+   ```
+
+3. Add a hook (e.g., pre-commit):
+   ```bash
+   npx husky add .husky/pre-commit "npm test"
+   ```
+
+4. Commit your changes:
+   Husky will now automatically run `npm test` before each commit.
+
+
+`lint-staged` is a tool that works in conjunction with Husky to run linters (or other tasks) only on the files staged for a Git commit. This optimizes linting processes by focusing only on the files being committed rather than the entire codebase.
+
+### Key Benefits
+- Improves performance by running tasks only on staged files.
+- Prevents committing code that doesn't meet quality standards.
+- Works seamlessly with Git hooks set up by Husky.
+
+### The `-D` flag
+The `-D` flag in `npm install` (or `yarn add`) means you're installing `lint-staged` as a **development dependency**, which is typical for tools used during development (like linters, test runners, and build tools).
+
+### Example
+To install `lint-staged` as a dev dependency:
+```bash
+npm install lint-staged -D
+```
+
+### Configuration
+After installing, you can configure `lint-staged` in your `package.json`:
+```json
+"lint-staged": {
+  "*.js": "eslint --fix"
+}
+```
+
+When committing, `lint-staged` will automatically fix and lint only the staged `.js` files. It pairs well with Husky to enforce these rules.
