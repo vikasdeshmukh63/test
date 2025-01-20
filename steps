@@ -31,3 +31,46 @@ C. setup nodemon and change scripts
 
 D. setup build script
         dist":"npx tsc" (it will compile ts and create a js files)
+
+E. folder structure
+
+        (IN SRC folder)
+        --config >
+                  config.ts
+        --constants >
+                     application.ts
+                     responseMessage.ts 
+        --controller >
+                      apiController.ts
+        --model > 
+                 model.ts
+        --router >
+                  router.ts
+        --services >
+        --types > 
+                 types.ts
+        --utils >
+                 quicker.ts(for most used utils)
+                 errorObject.ts
+                 httpError.ts
+                 httpResponse.ts
+        --middleware >
+                      globalErrorHandler.ts
+        --view >
+
+        (OUTSIDE SRC FOLDER AT ROOT LEVEL)
+        --script > 
+        --nginx >
+                 http.conf
+                 https.conf 
+        --logs >
+        --public >
+        --test >
+        --docker >
+                  Dockerfile
+        .env.development
+        .env.production
+        .env.example
+        README.md
+        nodemon.json (for development)
+        ecosystem.config.js (for deployemt in production)
