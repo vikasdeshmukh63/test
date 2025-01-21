@@ -130,8 +130,8 @@ G. eslint setup
                                 })```
         5. now run npx eslint . you will see the eslint error in the terminal
         6. add the following scripts in the package.json
-                "lint": "eslint .", (for linting)
-                "lint:fix":"eslint . --fix", (for possible fixes for lint errors)
+                "lint": "eslint", (for linting)
+                "lint:fix":"eslint --fix", (for possible fixes for lint errors)
 
 H. setting up lint-staged
         1. after liscence add following in the package.json
