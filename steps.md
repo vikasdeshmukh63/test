@@ -145,3 +145,20 @@ H. setting up lint-staged
                 . "${dirname -- "$0"}/_/husky.sh"
 
                 npx lint-staged```
+        3. now if you try to commit without following the eslint rules you will get errors in console
+
+I. setting up prettier
+        1. npm install --save-dev --save-exact prettier
+        2. create file .prettierrc in root
+        3. add prettier rules in this file
+
+J. binding eslint and prettier together so they can work together
+        1. npm install --save-dev eslint-config-prettier
+        2. go to eslint.config.mjs
+                import eslintConfigPrettier from 'eslint-config-prettier'
+                now add the eslintConfigPrettier in the extend array 
+        3. now eslint and prettier will work together
+        4. create scripts in package.json
+                 "format:check":"prettier . --check",
+                 "format:fix":"prettier . --fix",
+        5 add  "npm run format:fix" in lint-staged script in package.json
