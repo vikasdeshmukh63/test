@@ -161,4 +161,45 @@ J. binding eslint and prettier together so they can work together
         4. create scripts in package.json
                  "format:check":"prettier . --check",
                  "format:fix":"prettier . --fix",
-        5 add  "npm run format:fix" in lint-staged script in package.json
+        5. add  "npm run format:fix" in lint-staged script in package.json
+        6. now prettier will check and format the code before pushing to github
+
+K. project enviornment setup
+        1. we will use dotenv-flow package for it npm i dotenv-flow
+        2. we wil use cross-env pacakge for to detect and set NODE_ENV variable npm i cross-env
+        3. now make change in dev script and make sure that you have .env.development file
+                        "dev": "cross-env NODE_ENV=development nodemon src/server.ts",
+        4. now make change in the start script and make sure that you have .env.production file
+                        "start": "cross-env NODE_ENV=production node dist/server.js",
+        5. now add the required variables in the all the .env files
+                        ```# general
+                        ENV=production
+                        PORT=3000
+                        SERVER_URL=http://localhost:3000
+
+                        # database
+                        DATABASE_URL=postgres://localhost:5432/your_database```
+        6. go to /config/config.ts and add following 
+                import dotenvFlow from 'dotenv-flow'
+
+                dotenvFlow.config()
+
+                export default {
+                        // general
+                        ENV: process.env.ENV,
+                        PORT: process.env.PORT,
+                        SERVER_URL: process.env.SERVER_URL,
+
+                        // database
+                        DATABASE: process.env.DATABASE_URL
+                }
+
+L. setup nodemon config
+        1. go to nodemon.json file and add some configuration
+                ```{
+                        "ext":".ts",
+                        "ignore":["dist","node_modules"]
+                }```
+
+M. setup express.js
+        
