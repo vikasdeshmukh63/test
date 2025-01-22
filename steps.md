@@ -283,4 +283,11 @@ R. setup logging
         1. npm i winston
         2. go to utils and create a file logger.ts
         
-        
+S. source map setup       
+        1. npm i source-map-support
+        2. npm i @types/source-map-support -D
+        3. go to /utils/logger.ts and add following
+                ```import * as sourceMapSupport from 'source-map-support'
+
+                // linking trace support
+                sourceMapSupport.install()```
