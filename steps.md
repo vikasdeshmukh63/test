@@ -202,4 +202,85 @@ L. setup nodemon config
                 }```
 
 M. setup express.js
+        1. npm i express
+        2. npm i @types/express -D
+        3. go in app.ts and add following
+                ```import express, { Application } from "express";
+
+                const app:Application = express()
+
+                export default app```
+        4. go to server.ts and then add following
+                ```import app from './app'
+                import config from './config/config'
+
+                const server = app.listen(config.PORT)
+
+                // to do operation before starting a server we have to do it in following way
+                ;(() => {
+                    try {
+                        // databse connection
+                        console.info(`APPLICATION STARTED`, {
+                            meta: {
+                                PORT: config.PORT,
+                                SERVER_URL: config.SERVER_URL
+                            }
+                        })
+                    } catch (err) {
+                        console.error(`APPLICATION ERROR`, {
+                            meta: {
+                                err
+                           }
+                       })
+
+                       // closing the server and handeling error if there is any
+                    server.close((error)=>{
+                           if(error){
+                             console.error(`APPLICATION ERROR`,{meta:error})
+                           }
+
+                           process.exit(1)
+                       })
+                   }
+                })()```
+        5. there will be more setup we can refer code for that
+
+N. setup response and request structure
+        1. go to /types/types.ts and add like following example 
+                export type THttpResponse = {
+                        success:boolean
+                        statusCode:number
+                        request:{
+                                ip?:string | null
+                                method:string
+                                url:string
+                        },
+                        message:string
+                        data:unknown
+                        }
+        2. go to /utils/httpResponse.ts and create a structured response using a function
+        3. go to /utils/errorObject.ts and add some structured respones in case of error using a function
+        3. go to /utils/httpError.ts to create a structured error response using a function as we are using next in the httpError we are passing the flow to next controller but we dont have any controller to handle the error hence here comes the concept of the global error handler
+
+
+O. Define constants
+        1. go to /constants/application.ts and add required constants
+                ```export enum EApplicationEnvironment {
+                        DEVELOPMENT = 'development',
+                        PRODUCTION = 'production',
+                }```
+        2. go to /constants/responseMessage.ts
+                
+
+P. global error handler
+        1. go to /middleware/globalErrorHandler.ts and add a error handler function
+        2. go to app.ts and use the global error handler
+
+Q. 404 error handler
+        1. go to app.ts and add 404 handler
+
+R. setup logging
+        1. npm i winston
+        2. go to utils and create a file logger.ts
+        
         
