@@ -291,3 +291,5 @@ S. source map setup
 
                 // linking trace support
                 sourceMapSupport.install()```
+T. colorful terminal
+        1. npm i colorette
