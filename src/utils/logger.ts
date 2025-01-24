@@ -1,17 +1,19 @@
-import { createLogger, format, transports } from 'winston'
-import { ConsoleTransportInstance, FileTransportInstance } from 'winston/lib/winston/transports'
-import util from 'util'
-import config from '../config/config'
-import { EApplicationEnvironment } from '../constants/application'
+import { blue, green, magenta, red, yellow } from 'colorette'
 import path from 'path'
 import * as sourceMapSupport from 'source-map-support'
-import { blue, green, magenta, red, yellow } from 'colorette'
+import util from 'util'
+import { createLogger, format, transports } from 'winston'
+import 'winston-mongodb'
+import { ConsoleTransportInstance, FileTransportInstance } from 'winston/lib/winston/transports'
+import config from '../config/config'
+import { EApplicationEnvironment } from '../constants/application'
+import { MongoDBTransportInstance } from 'winston-mongodb'
 
 // linking trace support
 sourceMapSupport.install()
 
 const colorizeLevel = (level: string) => {
-    switch(level){
+    switch (level) {
         case 'ERROR':
             return red(level)
         case 'INFO':
@@ -27,7 +29,7 @@ const consoleLogFormat = format.printf((info) => {
     const { level, message, timestamp, meta = {} } = info
 
     const customLevel = colorizeLevel(level.toUpperCase())
-    const customTimestamp = green(timestamp as string) 
+    const customTimestamp = green(timestamp as string)
     const customMessage = message
 
     const customMeta = util.inspect(meta, {
@@ -82,6 +84,18 @@ const fileLogFormat = format.printf((info) => {
     return JSON.stringify(logData, null, 4)
 })
 
+const mongodbTransport = (): Array<MongoDBTransportInstance> => {
+    return [
+        new transports.MongoDB({
+            level: 'info',
+            db: config.DATABASE as string,
+            metaKey: 'meta',
+            expireAfterSeconds: 60 * 60 * 24 * 30,
+            collection: 'application-logs'
+        })
+    ]
+}
+
 const fileTransport = (): Array<FileTransportInstance> => {
     return [
         new transports.File({
@@ -96,5 +110,5 @@ export default createLogger({
     defaultMeta: {
         meta: {}
     },
-    transports: [...fileTransport(), ...consoleTransport()]
+    transports: [...fileTransport(), ...mongodbTransport(), ...consoleTransport()]
 })

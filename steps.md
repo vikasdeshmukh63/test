@@ -299,3 +299,7 @@ U. database setup(mongodb)
         2. npm i mongoose
         3. go to /src/services/databaseService.ts and create connection
         4. go to server.ts file and invoke the database connection function
+
+V. database logger
+        1. npm i winston-mongodb
+        2. now go to /utils/logger.ts and create a new mongodb transport and add it with other transport in the transports array
