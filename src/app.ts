@@ -5,11 +5,18 @@ import globalErrorHandler from './middleware/globalErrorHandler'
 import responseMessage from './constants/responseMessage'
 import httpError from './utils/httpError'
 import helmet from 'helmet'
+import cors from 'cors'
 
 const app: Application = express()
 
 // to secure the app by setting various http headers
 app.use(helmet())
+// to allow cross origin requests
+app.use(cors({
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    origin: '*', // allow all origins,
+    credentials: true // allow cookies to be sent
+}))
 // middleware to get the req body in json format
 app.use(express.json())
 // to make public folder accessible

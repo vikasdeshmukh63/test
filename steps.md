@@ -358,3 +358,9 @@ Z. helmet js
         3. go to app.ts and add following
                 // to secure the app by setting various http headers
                 app.use(helmet())
+
+ZA. cors setup
+        1. npm i cors
+        2. npm i @types/cors -D
+        3. go to app.ts and add following
+                app.use(cors())
