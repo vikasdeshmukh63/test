@@ -293,3 +293,9 @@ S. source map setup
                 sourceMapSupport.install()```
 T. colorful terminal
         1. npm i colorette
+
+U. database setup(mongodb)
+        1. put a connection url in the .env files
+        2. npm i mongoose
+        3. go to /src/services/databaseService.ts and create connection
+        4. go to server.ts file and invoke the database connection function
