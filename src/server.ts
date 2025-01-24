@@ -1,5 +1,6 @@
 import app from './app'
 import config from './config/config'
+import { initRateLimiter } from './config/rateLimiter';
 import databaseServices from './services/databaseServices';
 import logger from './utils/logger';
 
@@ -16,6 +17,9 @@ const server = app.listen(config.PORT)
                 CONNECTION_NAME:connection.name,
             }
         })
+
+        initRateLimiter(connection)
+        logger.info(`RATE LIMITER INITIALIZED`)
 
         logger.info(`APPLICATION STARTED`, {
             meta: {

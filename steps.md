@@ -364,3 +364,50 @@ ZA. cors setup
         2. npm i @types/cors -D
         3. go to app.ts and add following
                 app.use(cors())
+
+ZB. rate limiting setup
+        1. npm i rate-limiter-flexible
+        2. go to file /config/rate-limiter.ts and add following 
+                ```import { Connection } from "mongoose";
+                import { RateLimiterMongo } from "rate-limiter-flexible";
+
+                export let rateLimiterMongo: null | RateLimiterMongo = null;
+
+                const DURATION = 60
+                const POINTS = 10
+
+                export const initRateLimiter = (mongooseConnection:Connection) => {
+                rateLimiterMongo = new RateLimiterMongo({
+                        storeClient: mongooseConnection as any,
+                        points:POINTS,
+                        duration:DURATION
+                   })
+                }```
+        3. now go to server.ts and add following after database connection
+
+                ```initRateLimiter(connection)
+                logger.info(`RATE LIMITER INITIALIZED`)```
+        4. now create a new middleware for rate limiting
+                ```import { NextFunction, Request, Response } from 'express'
+                import config from '../config/config'
+                import { EApplicationEnvironment } from '../constants/application'
+                import { rateLimiterMongo } from '../config/rateLimiter'
+                import httpError from '../utils/httpError'
+                import responseMessage from '../constants/responseMessage'
+
+                export default (req: Request, _: Response, next: NextFunction) => {
+                    if (config.ENV === EApplicationEnvironment.DEVELOPMENT) {
+                        next()
+                    }
+
+                    if (rateLimiterMongo) {
+                        rateLimiterMongo
+                            .consume(req.ip as string, 1)
+                            .then(() => {
+                               next()
+                          })
+                       .catch(() => {
+                         httpError(next, new Error(responseMessage.TOO_MANY_REQUESTS), req, 429)
+                     })
+                }
+                }```
