@@ -411,3 +411,10 @@ ZB. rate limiting setup
                      })
                 }
                 }```
+
+ZC. to check dependency update and do updates
+        1. npm i npm-check-updates -g
+        2. now you can check the updates using command "ncu"
+        3. now for running updates use "ncu -u"
+        4. then run npm i
+        5. now you can use the chore flag while pushing the code because you updated the dependencies
