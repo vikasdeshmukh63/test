@@ -303,3 +303,58 @@ U. database setup(mongodb)
 V. database logger
         1. npm i winston-mongodb
         2. now go to /utils/logger.ts and create a new mongodb transport and add it with other transport in the transports array
+
+X. database migration setup
+        1. npm i ts-migrate-mongoose
+        2. create a folder at root level called /migrations
+        3. create a file /script/migration.js and paster a special script
+        4. go to script and then add these scripts
+                "migrate:dev":"cross-env MIGRATE_MODE=development node script/migration.js",
+                "migrate:prod":"cross-env MIGRATE_MODE=production node script/migration.js"
+        5. now if you run the script you have to run it like 
+                npm run migrate:dev create nameofmigration
+        6. it will create a migration file under /migrations folder also create a new collection in the database called migrations
+        7. now the migration state is at start is down and in the file we have two function called up and down
+        8. up funciton is something where we write what change we want to do like we want to convert name to first_name and last_name
+        9. down function is something where we write the inverse of the up function like to convert first_name and last_name to name
+        10. if there is some problem then we will rollback to the previous version of migration
+        11. to change the state of migraton we can do it as follows 
+                npm run migrate:dev up nameofmigration
+        12. to see the listing of our migration
+                npm run migrate:dev list
+        13. suppose if we delete the migration file from migration folder then if we run prune comman then that perticular migration will get deleted from db as well
+                npm run migrate:dev prune
+
+Y. health endpoint
+        1. go to /utils/quicker.ts and add following 
+                ```import os from 'os'
+                import config from '../config/config'
+
+                export default {
+                getSystemHealth: () => {
+                        return {
+                           cpuUsage: os.loadavg(),
+                           totalMemory: `${(os.totalmem() / 1024 / 1024).toFixed(2)} MB`,
+                          freeMemory: `${(os.freemem() / 1024 / 1024).toFixed(2)} MB`
+                       }
+                    },
+                    getApplicationHealth: () => {
+                        return {
+                            enviornment: config.ENV,
+                            uptime: `${process.uptime().toFixed(2)} Second`,
+                            memoryUsage: {
+                                heapTotal: `${(process.memoryUsage().heapTotal / 1024 / 1024).toFixed(2)} MB`,
+                                heapUsed: `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`
+                            }
+                        }
+                    }
+                }```
+
+        2. then simply create a route to 
+
+Z. helmet js
+        1. this package is use to do some security settings of server 
+        2. npm i helmet
+        3. go to app.ts and add following
+                // to secure the app by setting various http headers
+                app.use(helmet())

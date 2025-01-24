@@ -4,9 +4,12 @@ import router from './router/apiRouter'
 import globalErrorHandler from './middleware/globalErrorHandler'
 import responseMessage from './constants/responseMessage'
 import httpError from './utils/httpError'
+import helmet from 'helmet'
 
 const app: Application = express()
 
+// to secure the app by setting various http headers
+app.use(helmet())
 // middleware to get the req body in json format
 app.use(express.json())
 // to make public folder accessible
